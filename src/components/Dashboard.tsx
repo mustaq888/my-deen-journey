@@ -19,7 +19,13 @@ import { PrayerTimes } from "./PrayerTimes";
 import { ThemeToggle } from "./ThemeToggle";
 
 export const Dashboard = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(() => {
+    // Get current time in IST (UTC +5:30)
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    return new Date(utc + istOffset);
+  });
 
   // Mock data for demonstration
   const todayProgress = {
@@ -57,12 +63,13 @@ export const Dashboard = () => {
                 Welcome to My Deen Routine
               </p>
               <p className="text-sm text-muted-foreground">
-                {currentTime.toLocaleDateString('en-US', { 
+                {currentTime.toLocaleDateString('en-IN', { 
                   weekday: 'long', 
                   year: 'numeric', 
                   month: 'long', 
-                  day: 'numeric' 
-                })}
+                  day: 'numeric',
+                  timeZone: 'Asia/Kolkata'
+                })} • IST
               </p>
             </div>
             

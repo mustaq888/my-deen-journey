@@ -16,41 +16,41 @@ interface PrayerTime {
 export const PrayerTimes = () => {
   const { toast } = useToast();
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [location] = useState("Dubai, UAE"); // Mock location
+  const [location] = useState("New Delhi, India"); // IST location
   
-  // Mock prayer times - in a real app, this would come from an API
+  // Prayer times for IST (UTC +5:30) - realistic timings for Indian subcontinent
   const [prayers, setPrayers] = useState<PrayerTime[]>([
     {
       name: "Fajr",
-      time: "05:12",
+      time: "05:45",
       arabic: "الفجر",
       completed: true,
       isNext: false
     },
     {
       name: "Dhuhr",
-      time: "12:28",
+      time: "12:15",
       arabic: "الظهر",
       completed: true,
       isNext: false
     },
     {
       name: "Asr",
-      time: "15:45",
+      time: "15:30",
       arabic: "العصر",
       completed: true,
       isNext: false
     },
     {
       name: "Maghrib",
-      time: "18:12",
+      time: "17:45",
       arabic: "المغرب",
       completed: false,
       isNext: true
     },
     {
       name: "Isha",
-      time: "19:38",
+      time: "19:15",
       arabic: "العشاء",
       completed: false,
       isNext: false
