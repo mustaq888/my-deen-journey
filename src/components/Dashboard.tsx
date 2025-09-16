@@ -1,44 +1,40 @@
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { 
-  Moon, 
-  Sun, 
   Clock, 
   BookOpen, 
   Heart,
   CheckCircle2,
   Target,
-  Calendar
+  RefreshCw,
+  Wifi,
+  WifiOff
 } from "lucide-react";
 import { TasbeehCounter } from "./TasbeehCounter";
 import { DailyVerse } from "./DailyVerse";
 import { HabitTracker } from "./HabitTracker";
 import { PrayerTimes } from "./PrayerTimes";
 import { ThemeToggle } from "./ThemeToggle";
+import { useApp } from "@/contexts/AppContext";
+import { useAutoUpdate } from "@/hooks/useAutoUpdate";
 
 export const Dashboard = () => {
-  const [currentTime, setCurrentTime] = useState(() => {
-    // Get current time in IST (UTC +5:30)
-    const now = new Date();
-    const istOffset = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
-    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-    return new Date(utc + istOffset);
-  });
+  const { data, refreshPrayerTimes } = useApp();
+  const { isOnline, lastSync, forceSync } = useAutoUpdate();
 
-  // Mock data for demonstration
+  // Mock data for demonstration - in real app this would come from context
   const todayProgress = {
-    prayers: 3,
+    prayers: data.prayers.filter(p => p.completed).length,
     totalPrayers: 5,
-    tasbeeh: 150,
-    tasbeehGoal: 300,
+    tasbeeh: data.tasbeehCount,
+    tasbeehGoal: data.tasbeehGoal,
     habits: 4,
     totalHabits: 6,
   };
 
   const getGreeting = () => {
-    const hour = currentTime.getHours();
+    const hour = data.currentTime.getHours();
     if (hour < 12) return "صباح الخير";
     if (hour < 18) return "السلام عليكم";
     return "مساء الخير";
@@ -63,7 +59,7 @@ export const Dashboard = () => {
                 Welcome to My Deen Routine
               </p>
               <p className="text-sm text-muted-foreground">
-                {currentTime.toLocaleDateString('en-IN', { 
+                {data.currentTime.toLocaleDateString('en-IN', { 
                   weekday: 'long', 
                   year: 'numeric', 
                   month: 'long', 
@@ -71,9 +67,30 @@ export const Dashboard = () => {
                   timeZone: 'Asia/Kolkata'
                 })} • IST
               </p>
+              <div className="flex items-center justify-center gap-2 mt-2 text-xs text-muted-foreground">
+                {isOnline ? (
+                  <><Wifi className="h-3 w-3 text-success" /> Online</>
+                ) : (
+                  <><WifiOff className="h-3 w-3 text-warning" /> Offline</>
+                )}
+                {lastSync && (
+                  <span>• Last sync: {lastSync.toLocaleTimeString('en-IN', { 
+                    hour12: true, hour: '2-digit', minute: '2-digit' 
+                  })}</span>
+                )}
+              </div>
             </div>
             
-            <div className="animate-fade-in">
+            <div className="flex gap-2 animate-fade-in">
+              <Button
+                onClick={forceSync}
+                variant="ghost"
+                size="sm"
+                disabled={!isOnline}
+                className="text-muted-foreground hover:text-spiritual"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
               <ThemeToggle />
             </div>
           </div>

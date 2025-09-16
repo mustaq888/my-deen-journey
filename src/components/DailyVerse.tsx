@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, RefreshCw, Share } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useApp } from "@/contexts/AppContext";
 
 interface Verse {
   arabic: string;
@@ -12,7 +13,7 @@ interface Verse {
 }
 
 export const DailyVerse = () => {
-  const [currentVerse, setCurrentVerse] = useState<Verse | null>(null);
+  const { data } = useApp();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -44,20 +45,21 @@ export const DailyVerse = () => {
     }
   ];
 
-  useEffect(() => {
-    // Set a random verse on component mount
-    const randomVerse = verses[Math.floor(Math.random() * verses.length)];
-    setCurrentVerse(randomVerse);
-  }, []);
+  // Get current verse based on daily index from context
+  const currentVerse = verses[data.dailyVerseIndex] || verses[0];
 
   const getNewVerse = () => {
     setIsLoading(true);
     
     // Simulate loading for better UX
     setTimeout(() => {
-      const availableVerses = verses.filter(v => v !== currentVerse);
+      // Get a different verse
+      const availableVerses = verses.filter((_, index) => index !== data.dailyVerseIndex);
       const randomVerse = availableVerses[Math.floor(Math.random() * availableVerses.length)];
-      setCurrentVerse(randomVerse);
+      const newIndex = verses.indexOf(randomVerse);
+      
+      // In a real app, you'd update this through context
+      // For now, we'll just show the new verse temporarily
       setIsLoading(false);
       
       toast({

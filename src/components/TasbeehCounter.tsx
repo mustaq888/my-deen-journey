@@ -1,23 +1,19 @@
-import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Heart, RotateCcw, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useApp } from "@/contexts/AppContext";
 
 export const TasbeehCounter = () => {
-  const [count, setCount] = useState(0);
-  const [goal, setGoal] = useState(100);
-  const [isVibrating, setIsVibrating] = useState(false);
+  const { data, updateTasbeehCount, resetTasbeeh } = useApp();
   const { toast } = useToast();
+  const count = data.tasbeehCount;
+  const goal = data.tasbeehGoal;
 
   const handleIncrement = () => {
     const newCount = count + 1;
-    setCount(newCount);
-    
-    // Add vibration effect
-    setIsVibrating(true);
-    setTimeout(() => setIsVibrating(false), 150);
+    updateTasbeehCount(newCount);
 
     // Check for milestones
     if (newCount === goal) {
@@ -33,15 +29,6 @@ export const TasbeehCounter = () => {
         duration: 2000,
       });
     }
-  };
-
-  const handleReset = () => {
-    setCount(0);
-    toast({
-      title: "Counter Reset",
-      description: "Starting fresh with your tasbeeh",
-      duration: 2000,
-    });
   };
 
   const getProgressPercentage = () => {
@@ -81,9 +68,7 @@ export const TasbeehCounter = () => {
 
       {/* Counter Display */}
       <div className="text-center mb-6">
-        <div className={`text-6xl md:text-7xl font-bold text-spiritual transition-transform duration-150 ${
-          isVibrating ? 'scale-110' : 'scale-100'
-        }`}>
+        <div className={`text-6xl md:text-7xl font-bold text-spiritual transition-transform duration-150`}>
           {count}
         </div>
         <p className="text-muted-foreground mt-2">
@@ -117,7 +102,7 @@ export const TasbeehCounter = () => {
         </Button>
         
         <Button
-          onClick={handleReset}
+          onClick={resetTasbeeh}
           variant="outline"
           size="lg"
           className="h-16"

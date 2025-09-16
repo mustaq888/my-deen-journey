@@ -1,87 +1,18 @@
-import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, MapPin, Bell } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-
-interface PrayerTime {
-  name: string;
-  time: string;
-  arabic: string;
-  completed: boolean;
-  isNext: boolean;
-}
+import { useApp } from "@/contexts/AppContext";
 
 export const PrayerTimes = () => {
-  const { toast } = useToast();
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [location] = useState("New Delhi, India"); // IST location
+  const { data, updatePrayerCompletion } = useApp();
+  const prayers = data.prayers;
+  const currentTime = data.currentTime;
   
-  // Prayer times for IST (UTC +5:30) - realistic timings for Indian subcontinent in 12-hour format
-  const [prayers, setPrayers] = useState<PrayerTime[]>([
-    {
-      name: "Fajr",
-      time: "5:45 AM",
-      arabic: "الفجر",
-      completed: true,
-      isNext: false
-    },
-    {
-      name: "Dhuhr",
-      time: "12:15 PM",
-      arabic: "الظهر",
-      completed: true,
-      isNext: false
-    },
-    {
-      name: "Asr",
-      time: "3:30 PM",
-      arabic: "العصر",
-      completed: true,
-      isNext: false
-    },
-    {
-      name: "Maghrib",
-      time: "5:45 PM",
-      arabic: "المغرب",
-      completed: false,
-      isNext: true
-    },
-    {
-      name: "Isha",
-      time: "7:15 PM",
-      arabic: "العشاء",
-      completed: false,
-      isNext: false
-    }
-  ]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+  const location = "New Delhi, India";
 
   const togglePrayerCompletion = (prayerName: string) => {
-    setPrayers(prev => prev.map(prayer => {
-      if (prayer.name === prayerName) {
-        const newCompleted = !prayer.completed;
-        
-        if (newCompleted) {
-          toast({
-            title: "Allahu Akbar! 🤲",
-            description: `${prayer.name} prayer marked as completed`,
-            duration: 2000,
-          });
-        }
-        
-        return { ...prayer, completed: newCompleted };
-      }
-      return prayer;
-    }));
+    updatePrayerCompletion(prayerName);
   };
 
   const getNextPrayer = () => {
