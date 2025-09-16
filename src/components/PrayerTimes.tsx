@@ -18,39 +18,39 @@ export const PrayerTimes = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [location] = useState("New Delhi, India"); // IST location
   
-  // Prayer times for IST (UTC +5:30) - realistic timings for Indian subcontinent
+  // Prayer times for IST (UTC +5:30) - realistic timings for Indian subcontinent in 12-hour format
   const [prayers, setPrayers] = useState<PrayerTime[]>([
     {
       name: "Fajr",
-      time: "05:45",
+      time: "5:45 AM",
       arabic: "الفجر",
       completed: true,
       isNext: false
     },
     {
       name: "Dhuhr",
-      time: "12:15",
+      time: "12:15 PM",
       arabic: "الظهر",
       completed: true,
       isNext: false
     },
     {
       name: "Asr",
-      time: "15:30",
+      time: "3:30 PM",
       arabic: "العصر",
       completed: true,
       isNext: false
     },
     {
       name: "Maghrib",
-      time: "17:45",
+      time: "5:45 PM",
       arabic: "المغرب",
       completed: false,
       isNext: true
     },
     {
       name: "Isha",
-      time: "19:15",
+      time: "7:15 PM",
       arabic: "العشاء",
       completed: false,
       isNext: false
@@ -92,9 +92,22 @@ export const PrayerTimes = () => {
     const nextPrayer = getNextPrayer();
     if (!nextPrayer) return "";
     
-    const [hours, minutes] = nextPrayer.time.split(':').map(Number);
+    // Parse 12-hour format time
+    const timeStr = nextPrayer.time.replace(/\s?(AM|PM)/i, '');
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const isPM = nextPrayer.time.toUpperCase().includes('PM');
+    
     const nextPrayerTime = new Date();
-    nextPrayerTime.setHours(hours, minutes, 0, 0);
+    let adjustedHours = hours;
+    
+    // Convert to 24-hour format for calculation
+    if (isPM && hours !== 12) {
+      adjustedHours = hours + 12;
+    } else if (!isPM && hours === 12) {
+      adjustedHours = 0;
+    }
+    
+    nextPrayerTime.setHours(adjustedHours, minutes, 0, 0);
     
     const now = new Date();
     const timeDiff = nextPrayerTime.getTime() - now.getTime();
