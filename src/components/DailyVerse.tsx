@@ -17,7 +17,6 @@ export const DailyVerse = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Sample verses for demonstration
   const verses: Verse[] = [
     {
       arabic: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا",
@@ -45,21 +44,20 @@ export const DailyVerse = () => {
     }
   ];
 
-  // Get current verse based on daily index from context
+
   const currentVerse = verses[data.dailyVerseIndex] || verses[0];
 
   const getNewVerse = () => {
     setIsLoading(true);
     
-    // Simulate loading for better UX
+
     setTimeout(() => {
-      // Get a different verse
+     
       const availableVerses = verses.filter((_, index) => index !== data.dailyVerseIndex);
       const randomVerse = availableVerses[Math.floor(Math.random() * availableVerses.length)];
       const newIndex = verses.indexOf(randomVerse);
       
-      // In a real app, you'd update this through context
-      // For now, we'll just show the new verse temporarily
+     
       setIsLoading(false);
       
       toast({
@@ -77,7 +75,7 @@ export const DailyVerse = () => {
         text: `${currentVerse.arabic}\n\n"${currentVerse.translation}"\n\n${currentVerse.reference}`,
       });
     } else {
-      // Fallback for browsers that don't support Web Share API
+      
       toast({
         title: "Share feature",
         description: "Copy the verse text to share it manually",

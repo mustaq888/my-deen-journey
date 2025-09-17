@@ -24,7 +24,7 @@ export const TasbeehCounter = () => {
       });
     } else if (newCount % 33 === 0 && newCount > 0) {
       toast({
-        title: "✨ Milestone Reached",
+        title: "✨ MashaAllah!",
         description: `${newCount} tasbeeh completed!`,
         duration: 2000,
       });
@@ -37,10 +37,10 @@ export const TasbeehCounter = () => {
 
   const getDhikrText = () => {
     const dhikrOptions = [
-      "سُبْحَانَ اللّهِ",
-      "الْحَمْدُ لِلّهِ", 
-      "لَا إِلَهَ إِلَّا اللّهُ",
-      "اللّهُ أَكْبَرُ"
+      "سُبْحَانَ اللّهِ/Subhan Allah",
+      "الْحَمْدُ لِلّهِ/Alhamdulillah", 
+      "لَا إِلَهَ إِلَّا اللّهُ/La ilaha illallah",
+      "اللّهُ أَكْبَرُ/Allahu Akbar"
     ];
     
     const cycleIndex = Math.floor(count / 33) % dhikrOptions.length;
@@ -117,7 +117,7 @@ export const TasbeehCounter = () => {
         <div className="mt-4 p-3 bg-success/10 border border-success/20 rounded-lg animate-scale-in">
           <div className="flex items-center gap-2 text-success">
             <Trophy className="h-5 w-5" />
-            <span className="font-medium">Daily Goal Achieved!</span>
+            <span className="font-medium">Alhamdulillah</span>
           </div>
         </div>
       )}

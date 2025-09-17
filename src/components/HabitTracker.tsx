@@ -21,7 +21,7 @@ export const HabitTracker = () => {
   const [habits, setHabits] = useState<Habit[]>([
     {
       id: '1',
-      name: 'Fajr Prayer',
+      name: 'Fajr Namaz',
       icon: '🌅',
       completed: true,
       streak: 7,
@@ -66,7 +66,15 @@ export const HabitTracker = () => {
       completed: false,
       streak: 6,
       category: 'spiritual'
-    }
+    },
+    {
+    id: '7',
+      name: 'WitR Namaz',
+      icon: '🙏',
+      completed: false,
+      streak: 6,
+      category: 'spiritual'
+  },
   ]);
 
   const toggleHabit = (habitId: string) => {
@@ -77,7 +85,7 @@ export const HabitTracker = () => {
         
         if (newCompleted) {
           toast({
-            title: "Great job! 🎉",
+            title: "MashaAllah!🎉",
             description: `${habit.name} completed! Streak: ${newStreak} days`,
             duration: 2000,
           });
@@ -189,7 +197,7 @@ export const HabitTracker = () => {
         <div className="mt-4 p-3 bg-success/10 border border-success/20 rounded-lg animate-scale-in">
           <div className="flex items-center gap-2 text-success">
             <CheckCircle2 className="h-5 w-5" />
-            <span className="font-medium">All habits completed today! 🎉</span>
+            <span className="font-medium">Alhamdulillah, all my habits are completed today 🎉</span>
           </div>
         </div>
       )}

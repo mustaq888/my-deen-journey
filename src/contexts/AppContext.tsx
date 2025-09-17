@@ -48,10 +48,10 @@ const calculatePrayerTimes = (date: Date) => {
   
   const baseTimes = {
     fajr: { hour: 5, minute: 45 },
-    dhuhr: { hour: 12, minute: 15 },
-    asr: { hour: 15, minute: 30 },
-    maghrib: { hour: 17, minute: 45 },
-    isha: { hour: 19, minute: 15 }
+    dhuhr: { hour: 13, minute: 30 },
+    asr: { hour: 17, minute: 15 },
+    maghrib: { hour: 18, minute: 35 },
+    isha: { hour: 20, minute: 30 }
   };
   
   // Apply seasonal adjustments (simplified)

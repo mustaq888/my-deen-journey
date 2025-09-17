@@ -63,7 +63,7 @@ export const PrayerTimes = () => {
         <div className="flex items-center gap-3">
           <Clock className="h-6 w-6 text-spiritual" />
           <h2 className="text-2xl font-semibold text-foreground">
-            Prayer Times
+            Namaz Waqt
           </h2>
         </div>
         
